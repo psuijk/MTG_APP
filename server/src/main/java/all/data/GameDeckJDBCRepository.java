@@ -5,11 +5,13 @@ import all.models.GameDeck;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+@Repository
 public class GameDeckJDBCRepository implements GameDeckRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -19,14 +21,14 @@ public class GameDeckJDBCRepository implements GameDeckRepository {
 
     @Override
     public List<GameDeck> findAll() {
-        final String sql = "select game_deck_id, game_id, deck_id from game_deck limit 1000;";
+        final String sql = "select game_deck_id, game_id, deck_id, position from game_deck limit 1000;";
 
         return jdbcTemplate.query(sql, new GameDeckMapper());
     }
 
     @Override
     public GameDeck findById(int gameDeckId) {
-        final String sql = "select game_deck_id, game_id, deck_id from game_deck where game_deck_id = ?;";
+        final String sql = "select game_deck_id, game_id, deck_id, position from game_deck where game_deck_id = ?;";
 
         return jdbcTemplate.query(sql, new GameDeckMapper(), gameDeckId)
                 .stream()
@@ -67,7 +69,8 @@ public class GameDeckJDBCRepository implements GameDeckRepository {
         return jdbcTemplate.update(sql,
                 gameDeck.getGameId(),
                 gameDeck.getDeckId(),
-                gameDeck.getPosition()) > 0;
+                gameDeck.getPosition(),
+                gameDeck.getGameDeckId()) > 0;
     }
 
     @Override

@@ -12,7 +12,8 @@ public class GameMapper implements RowMapper<Game> {
         Game game = new Game();
         game.setGameId(resultSet.getInt("game_id"));
         game.setDatePlayed(resultSet.getDate("date_played").toLocalDate());
-        game.setWinnerDeckId(resultSet.getInt("player_count"));
+        game.setWinnerDeckId(resultSet.getInt("winner_deck_id"));
+        game.setPlayerCount(resultSet.getInt("player_count"));
         return game;
     }
 

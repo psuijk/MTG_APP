@@ -5,12 +5,14 @@ import all.models.Game;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+@Repository
 public class GameJDBCRepository implements GameRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -68,7 +70,8 @@ public class GameJDBCRepository implements GameRepository {
         return jdbcTemplate.update(sql,
                 game.getDatePlayed(),
                 game.getWinnerDeckId(),
-                game.getPlayerCount()) > 0;
+                game.getPlayerCount(),
+                game.getGameId()) > 0;
     }
 
     @Override

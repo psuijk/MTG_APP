@@ -5,10 +5,12 @@ import all.models.Deck;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 
+@Repository
 public class DeckJDBCRepository implements DeckRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -31,7 +33,7 @@ public class DeckJDBCRepository implements DeckRepository {
 
     @Override
     public Deck add(Deck deck) {
-        final String sql = "insert into deck (player_id, name, active, commander_id) values (?, ?, ?);";
+        final String sql = "insert into deck (player_id, name, active, commander_id) values (?, ?, ?, ?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -39,6 +41,7 @@ public class DeckJDBCRepository implements DeckRepository {
             ps.setInt(1, deck.getPlayerId());
             ps.setString(2, deck.getName());
             ps.setBoolean(3, deck.isActive());
+            ps.setString(4, deck.getCommanderId());
             return ps;
         }, keyHolder);
 
@@ -52,19 +55,20 @@ public class DeckJDBCRepository implements DeckRepository {
                 "player_id = ?, " +
                 "name = ?, " +
                 "active = ?, " +
-                "commander_id = ?, " +
+                "commander_id = ? " +
                 "where deck_id = ?;";
 
         return jdbcTemplate.update(sql,
                 deck.getPlayerId(),
                 deck.getName(),
                 deck.isActive(),
-                deck.getCommanderId()) > 0;
+                deck.getCommanderId(),
+                deck.getDeckId()) > 0;
     }
 
     @Override
     public boolean deleteById(int deckId) {
         //deck_id must not appear in any game_decks
-        return jdbcTemplate.update("delete from deck where deck_id = ?;") > 0;
+        return jdbcTemplate.update("delete from deck where deck_id = ?;", deckId) > 0;
     }
 }

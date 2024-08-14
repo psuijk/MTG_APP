@@ -6,12 +6,14 @@ import all.models.Player;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+@Repository
 public class PlayerJDBCRepository implements PlayerRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -85,7 +87,7 @@ public class PlayerJDBCRepository implements PlayerRepository {
     }
 
     private void addDecks(Player player) {
-        final String sql = "select d.deck_id, d.name, d.active, d.commander_id " +
+        final String sql = "select d.deck_id, d.player_id, d.name, d.active, d.commander_id " +
                 "from player p " +
                 "join " +
                 "deck d on p.player_id = d.player_id " +
