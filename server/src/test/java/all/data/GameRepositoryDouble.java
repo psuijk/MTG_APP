@@ -27,7 +27,7 @@ public class GameRepositoryDouble implements GameRepository {
     }
 
     @Override
-    public boolean delete(Game game) {
+    public boolean delete(int gameId) {
         return true;
     }
 }
