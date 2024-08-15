@@ -9,5 +9,5 @@ public interface GameRepository {
     Game findById(int gameId);
     Game add(Game game);
     boolean update(Game game);
-    boolean delete(Game game);
+    boolean delete(int gameId);
 }

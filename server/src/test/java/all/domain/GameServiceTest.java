@@ -112,8 +112,8 @@ class GameServiceTest {
 
     @Test
     void shouldDelete() {
-        Game game = makeGame();
-        Result<Game> result = service.delete(game);
+        //Game game = makeGame();
+        Result<Game> result = service.delete(1);
         assertEquals(ResultType.SUCCESS, result.getType());
     }
 

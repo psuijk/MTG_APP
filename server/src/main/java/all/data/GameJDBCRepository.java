@@ -75,7 +75,7 @@ public class GameJDBCRepository implements GameRepository {
     }
 
     @Override
-    public boolean delete(Game game) {
-        return jdbcTemplate.update("delete from game where game_id = ?;", game.getGameId()) > 0;
+    public boolean delete(int gameId) {
+        return jdbcTemplate.update("delete from game where game_id = ?;", gameId) > 0;
     }
 }

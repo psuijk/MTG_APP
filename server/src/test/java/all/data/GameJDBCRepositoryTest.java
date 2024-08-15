@@ -61,10 +61,10 @@ class GameJDBCRepositoryTest {
 
     @Test
     void delete() {
-        Game game = new Game(6, LocalDate.of(2024, 8, 5), 5, 4, new int[] {1, 2, 3, 4});
-        assertTrue(repository.delete(game));
-        game.setGameId(9000);
-        assertFalse(repository.delete(game));
+        //Game game = new Game(6, LocalDate.of(2024, 8, 5), 5, 4, new int[] {1, 2, 3, 4});
+        assertTrue(repository.delete(6));
+        //game.setGameId(9000);
+        assertFalse(repository.delete(9000));
     }
 
     private Game makeGame() {

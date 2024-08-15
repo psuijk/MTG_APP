@@ -110,9 +110,9 @@ public class GameService {
         return result;
     }
 
-    public Result<Game> delete(Game game) {
+    public Result<Game> delete(int gameId) {
         Result<Game> result = new Result<>();
-        List<GameDeck> gameDecks = gameDeckRepo.findByGameId(game.getGameId());
+        List<GameDeck> gameDecks = gameDeckRepo.findByGameId(gameId);
         for (GameDeck gd: gameDecks) {
             if (!gameDeckRepo.deleteById(gd.getGameDeckId())) {
                 result.addMessage("Failed to delete corresponding gameDeck row", ResultType.FAILURE);
@@ -120,8 +120,8 @@ public class GameService {
             }
         }
 
-        if (!gameRepo.delete(game)) {
-            result.addMessage(String.format("Failed to delete game with id %s", game.getGameId()), ResultType.FAILURE);
+        if (!gameRepo.delete(gameId)) {
+            result.addMessage(String.format("Failed to delete game with id %s", gameId), ResultType.FAILURE);
         }
 
         return result;
