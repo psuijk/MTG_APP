@@ -1,0 +1,30 @@
+@url = http://localhost:8080/api/game
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWVsZC1hZ2VudCIsInN1YiI6ImJvYkBkb21haW4uY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJleHAiOjE3MjM3NTU5MDh9.wLPTnKxE8s0T6BV_jh31qBIeshZ37r9YBXByXDtSSXQ
+
+
+GET {{url}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+GET {{url}}/2 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+PUT {{url}}/2 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "gameId": 2,
+    "datePlayed": "1956-11-09",
+    "winnerDeckId": 2,
+    "playerCount": 4,
+    "decks": [1,2,3,4]
+}
+
+###
+
+DELETE {{url}}/2 HTTP/1.1
+Authorization: Bearer {{token}}

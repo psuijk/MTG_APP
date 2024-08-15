@@ -66,7 +66,7 @@ public class PlayerService {
             return result;
         }
 
-        if (!player.getPlayerDecks().isEmpty()) {
+        if (player.getPlayerDecks() != null  && !player.getPlayerDecks().isEmpty()) {
             result.addMessage("cannot delete player with existing decks", ResultType.INVALID);
             return result;
         }

@@ -27,7 +27,7 @@ public class AppUserJDBCRepository implements AppUserRepository {
     public AppUser findByUsername(String username) {
         List<String> roles = getRolesByUsername(username);
 
-        final String sql = "select app_user_id, username, password_hash, disabled, first_name, last_name "
+        final String sql = "select app_user_id, username, password_hash, disabled "
                 + "from app_user "
                 + "where username = ?;";
 
@@ -40,15 +40,13 @@ public class AppUserJDBCRepository implements AppUserRepository {
     @Transactional
     public AppUser create(AppUser user) {
 
-        final String sql = "insert into app_user (username, password_hash, first_name, last_name) values (?, ?, ?, ?);";
+        final String sql = "insert into app_user (username, password_hash) values (?, ?);";
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
-            ps.setString(3, user.getFirstName());
-            ps.setString(4,user.getLastName());
             return ps;
         }, keyHolder);
 

@@ -12,29 +12,20 @@ import java.util.stream.Collectors;
 
 
 public class AppUser extends User {
+
     private static final String AUTHORITY_PREFIX = "ROLE_";
 
     private int appUserId;
-    private String firstName;
-    private String lastName;
-    //private final Role appUserRole;
 
     public AppUser(int appUserId, String username, String password,
-                   boolean disabled, List<String> roles, String firstName, String lastName) {
+                   boolean disabled, List<String> roles) {
         super(username, password, !disabled,
                 true, true, true,
                 convertRolesToAuthorities(roles));
         this.appUserId = appUserId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        //this.appUserRole = Role.findByName(roles.get(0));
     }
 
     private List<String> roles = new ArrayList<>();
-
-    /*public Role getAppUserRole() {
-        return appUserRole;
-    }*/
 
     public int getAppUserId() {
         return appUserId;
@@ -44,21 +35,6 @@ public class AppUser extends User {
         this.appUserId = appUserId;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public static List<GrantedAuthority> convertRolesToAuthorities(List<String> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>(roles.size());

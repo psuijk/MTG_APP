@@ -47,8 +47,8 @@ public class PlayerController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{player}")
-    public ResponseEntity<Object> deleteById(@PathVariable Player player) {
+    @DeleteMapping
+    public ResponseEntity<Object> delete(@RequestBody Player player) {
         Result<Player> result = service.delete(player);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.NO_CONTENT);

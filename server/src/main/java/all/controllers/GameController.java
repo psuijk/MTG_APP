@@ -34,8 +34,8 @@ public class GameController {
     }
 
     @PutMapping("/{gameId}")
-    public ResponseEntity<Object> update(@PathVariable int accountId, @RequestBody Game game) {
-        if (accountId != game.getGameId()) {
+    public ResponseEntity<Object> update(@PathVariable int gameId, @RequestBody Game game) {
+        if (gameId != game.getGameId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 

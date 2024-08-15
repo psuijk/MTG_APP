@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
-@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtConverter converter;
@@ -24,11 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*http
-                // your security configuration
-                .authorizeRequests()
-                .requestMatchers(new MvcRequestMatcher(mvcHandlerMappingIntrospector(), "/your-url"))
-                .authenticated();*/
         http.csrf().disable();
 
         http.cors();
@@ -67,9 +61,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
         };
     }
-
-    /*@Bean
-    public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
-        return new HandlerMappingIntrospector();
-    }*/
 }

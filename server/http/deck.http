@@ -1,0 +1,30 @@
+@url = http://localhost:8080/api/deck
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWVsZC1hZ2VudCIsInN1YiI6ImJvYkBkb21haW4uY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJleHAiOjE3MjM3NTUzMDh9.XbwOvasj1OD061WOltngAGTsV8wlLKwPxl4l_itsy4g
+
+
+GET {{url}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+GET {{url}}/2 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+PUT {{url}}/2 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "deckId": 2,
+    "playerId": 2,
+    "name": "Elves of the Wood",
+    "active": true,
+    "commanderId": "elfball"
+}
+
+###
+
+DELETE {{url}}/6 HTTP/1.1
+Authorization: Bearer {{token}}
