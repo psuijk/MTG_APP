@@ -39,7 +39,7 @@ CREATE TABLE player (
 
 CREATE TABLE deck (
     deck_id INT AUTO_INCREMENT PRIMARY KEY,
-    player_id INT,
+    player_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     active BOOLEAN DEFAULT TRUE,
     commander_id VARCHAR(255),
@@ -49,7 +49,7 @@ CREATE TABLE deck (
 CREATE TABLE game (
     game_id INT AUTO_INCREMENT PRIMARY KEY,
     date_played DATE NOT NULL,
-    winner_deck_id INT,
+    winner_deck_id INT NOT NULL,
     player_count INT NOT NULL,
     FOREIGN KEY (winner_deck_id) REFERENCES deck(deck_id)
 );

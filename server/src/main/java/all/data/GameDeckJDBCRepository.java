@@ -27,6 +27,20 @@ public class GameDeckJDBCRepository implements GameDeckRepository {
     }
 
     @Override
+    public List<GameDeck> findByDeckId(int deckId) {
+        final String sql = "select game_deck_id, game_id, deck_id, position from game_deck where deck_id = ?;";
+
+        return jdbcTemplate.query(sql, new GameDeckMapper(), deckId);
+    }
+
+    @Override
+    public List<GameDeck> findByGameId(int gameId) {
+        final String sql = "select game_deck_id, game_id, deck_id, position from game_deck where game_id = ?;";
+
+        return jdbcTemplate.query(sql, new GameDeckMapper(), gameId);
+    }
+
+    @Override
     public GameDeck findById(int gameDeckId) {
         final String sql = "select game_deck_id, game_id, deck_id, position from game_deck where game_deck_id = ?;";
 

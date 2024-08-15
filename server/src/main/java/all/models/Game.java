@@ -7,14 +7,16 @@ public class Game {
     private LocalDate datePlayed;
     private int winnerDeckId;
     private int playerCount;
+    private int[] decks;
 
     public Game() {}
 
-    public Game(int gameId, LocalDate datePlayed, int winnerDeckId, int playerCount) {
+    public Game(int gameId, LocalDate datePlayed, int winnerDeckId, int playerCount, int[] decks) {
         this.gameId = gameId;
         this.datePlayed = datePlayed;
         this.winnerDeckId = winnerDeckId;
         this.playerCount = playerCount;
+        this.decks = decks;
     }
 
     public int getGameId() {
@@ -47,5 +49,13 @@ public class Game {
 
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
+    }
+
+    public int[] getDecks() {
+        return decks;
+    }
+
+    public void setDecks(int[] decks) {
+        this.decks = decks;
     }
 }

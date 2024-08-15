@@ -11,7 +11,7 @@ public class App {
     public static void main(String[] args) {
 //        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
 //        // to see how IntelliJ IDEA suggests fixing it.
-//        System.out.printf("Welcome to the Cache Capital backend. Do or do not, there is no try-catch.");
+//        System.out.printf("Welcome to the MTG App backend. Do or do not, there is no try-catch.");
 //
 //        for (int i = 1; i <= 5; i++) {
 //            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint

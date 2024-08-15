@@ -61,7 +61,7 @@ class GameJDBCRepositoryTest {
 
     @Test
     void delete() {
-        Game game = new Game(6, LocalDate.of(2024, 8, 5), 5, 4);
+        Game game = new Game(6, LocalDate.of(2024, 8, 5), 5, 4, new int[] {1, 2, 3, 4});
         assertTrue(repository.delete(game));
         game.setGameId(9000);
         assertFalse(repository.delete(game));
@@ -72,6 +72,7 @@ class GameJDBCRepositoryTest {
         game.setDatePlayed(LocalDate.of(1990, 1, 1));
         game.setWinnerDeckId(4);
         game.setPlayerCount(4);
+        game.setDecks(new int[] {1, 2, 3, 4});
         return game;
     }
 }

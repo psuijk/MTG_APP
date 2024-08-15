@@ -1,5 +1,6 @@
 package all.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -15,6 +16,7 @@ public class Player {
         this.firstName = firstName;
         this.lastName = lastName;
         this.playerId = playerId;
+        this.playerDecks = new ArrayList<>();
     }
 
     public String getUsername() {
