@@ -18,6 +18,7 @@ public class PlayerService {
     public List<Player> findAll() { return this.playerRepo.findAll(); }
 
     public Player findById(int playerId) { return this.playerRepo.findById(playerId); }
+    public Player findByUsername(String username) { return this.playerRepo.findByUsername(username); }
 
     public Result<Player> add(Player player) {
         Result<Player> result = validate(player);

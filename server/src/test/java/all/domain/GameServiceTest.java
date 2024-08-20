@@ -1,9 +1,6 @@
 package all.domain;
 
-import all.data.GameDeckRepository;
-import all.data.GameDeckRepositoryDouble;
-import all.data.GameRepository;
-import all.data.GameRepositoryDouble;
+import all.data.*;
 import all.models.Game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,9 +19,12 @@ class GameServiceTest {
 
     GameService service;
 
+    @MockBean
+    PlayerRepository playerRepository;
+
     @BeforeEach
     void setup() {
-        service = new GameService(new GameDeckRepositoryDouble(), new GameRepositoryDouble());
+        service = new GameService(new GameDeckRepositoryDouble(), new GameRepositoryDouble(), playerRepository);
     }
 
     @Test

@@ -24,6 +24,14 @@ public class PlayerController {
     @GetMapping("/{playerId}")
     public Player findById(@PathVariable int playerId) { return service.findById(playerId); }
 
+    @GetMapping("/getplayer")
+    public Player findByUsername(@RequestParam String username) { return service.findByUsername(username); }
+
+    @GetMapping("/getplayerid")
+    public int findPlayerId(@RequestParam String username) {
+        return service.findByUsername(username).getPlayerId();
+    }
+
     @PostMapping
     public ResponseEntity<Object> add(@RequestBody Player player) {
         Result<Player> result = service.add(player);

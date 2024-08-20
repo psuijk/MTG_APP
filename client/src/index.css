@@ -1,13 +1,279 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Common container style for all pages */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  /* The background color is removed to allow the future background image to show */
+  background-color: transparent;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Adjustments to the blue box, now transparent */
+.blue-box {
+  padding: 40px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Header styling for title */
+header h1 {
+  margin-bottom: 20px;
+  /* Space between title and button */
+  font-size: 2.5rem;
+  color: #333;
+  /* Dark text color for contrast */
+}
+
+/* Styling for the button */
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Footer styling */
+footer {
+  margin-top: 20px;
+  /* Space between content and footer */
+  color: #666;
+}
+
+/* Navbar styling */
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  /* Dark background for contrast */
+  padding: 15px 0;
+}
+
+nav a {
+  color: white;
+  /* White text for contrast */
+  text-decoration: none;
+  /* Remove underline from links */
+  margin: 0 20px;
+  /* Evenly space the links */
+  font-size: 1.2rem;
+  /* Slightly larger font for readability */
+  font-weight: bold;
+  /* Bold text for emphasis */
+  transition: color 0.3s ease;
+  /* Smooth transition on hover */
+}
+
+nav a:hover {
+  color: #007bff;
+  /* Change color on hover */
+}
+
+/* Form container styling */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  background-color: transparent;
+}
+
+/* Page title styling */
+.page-title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  /* Space between the title and the form */
+}
+
+/* Login container styling */
+.login-container {
+  background-color: #f8f9fa;
+  /* Light grey background for the form */
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Label styling */
+.login-form label {
+  display: block;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Input field styling */
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Button container styling */
+.button-container {
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Link to go back home */
+.form-container a {
+  margin-top: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.form-container a:hover {
+  color: #0056b3;
+}
+
+/* Container for the player list page */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: transparent;
+}
+
+/* Title styling */
+h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  /* Space between title and other elements */
+}
+
+/* Button styling */
+.btn-outline-secondary {
+  margin-bottom: 20px;
+  /* Space between the button and the table */
+}
+
+/* Table styling */
+.table {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background-color: #f8f9fa;
+}
+
+.table thead th,
+.table tbody td {
+  padding: 10px;
+  text-align: left;
+  /* Ensure headers and cells have the same alignment */
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table tbody td .btn {
+  margin: 0;
+}
+
+/* Buttons inside table cells */
+.btn-outline-primary,
+.btn-outline-danger {
+  margin: 0;
+}
+
+/* Add margin to the delete button */
+.btn-outline-danger {
+  margin-left: 10px;
+}
+
+
+/* Buttons inside table cells */
+.btn-outline-primary,
+.btn-outline-danger {
+  margin: 0;
+  /* Remove margin from buttons */
+}
+
+/* Add margin to the delete button */
+.btn-outline-danger {
+  margin-left: 10px;
+}
+
+nav.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 15px;
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  /* Space between links */
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #d93636;
 }

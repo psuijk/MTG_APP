@@ -2,6 +2,7 @@ package all.domain;
 
 import all.data.GameDeckRepository;
 import all.data.GameRepository;
+import all.data.PlayerRepository;
 import all.models.Deck;
 import all.models.Game;
 import all.models.GameDeck;
@@ -15,10 +16,12 @@ import java.util.List;
 public class GameService {
     GameDeckRepository gameDeckRepo;
     GameRepository gameRepo;
+    PlayerRepository playerRepo;
 
-    public GameService (GameDeckRepository gameDeckRepo, GameRepository gameRepo) {
+    public GameService (GameDeckRepository gameDeckRepo, GameRepository gameRepo, PlayerRepository playerRepo) {
         this.gameDeckRepo = gameDeckRepo;
         this.gameRepo = gameRepo;
+        this.playerRepo = playerRepo;
     }
 
     public List<Game> findAll() { return gameRepo.findAll(); }
@@ -35,8 +38,9 @@ public class GameService {
         return games;
     }
 
-    public List<Game> findByPlayer(Player player) {
+    public List<Game> findByPlayer(int playerId) {
         List<Game> all = new ArrayList<>();
+        Player player = playerRepo.findById(playerId);
         if (!player.getPlayerDecks().isEmpty()) {
             for (Deck d : player.getPlayerDecks()) {
                 for (GameDeck gameDeck : gameDeckRepo.findByDeckId(d.getDeckId())) {

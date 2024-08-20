@@ -24,6 +24,11 @@ public class GameController {
     @GetMapping("/{gameId}")
     public Game findById(@PathVariable int gameId) { return service.findById(gameId); }
 
+    @GetMapping("/playersGames/{playerId}")
+    public List<Game> findByPlayerId(@PathVariable int playerId) {
+        return service.findByPlayer(playerId);
+    }
+
     @PostMapping
     public ResponseEntity<Object> add(@RequestBody Game game) {
         Result<Game> result = service.add(game);

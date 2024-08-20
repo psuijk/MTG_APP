@@ -23,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //
+        http.cors().and();
+        //
         http.csrf().disable();
 
         http.cors();
@@ -31,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // TODO add antMatchers here to configure access to specific API endpoints
                 .antMatchers("/api/user/authenticate").permitAll()
                 .antMatchers("/api/user/register").permitAll()
+                .antMatchers("/api/game/playersGames/**").authenticated()
                 // require authentication for any request...
                 .anyRequest().authenticated()
                 .and()
@@ -57,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:3000")
-                        .allowedMethods("*");
+                        .allowedMethods("*")
+                        .allowedHeaders("*");
             }
         };
     }

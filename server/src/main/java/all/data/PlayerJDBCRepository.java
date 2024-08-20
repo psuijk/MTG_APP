@@ -46,6 +46,24 @@ public class PlayerJDBCRepository implements PlayerRepository {
     }
 
     @Override
+    @Transactional
+    public Player findByUsername(String username) {
+        final String sql = "select player_id, first_name, last_name, username " +
+                "from player " +
+                "where username = ?;";
+
+        Player player = jdbcTemplate.query(sql, new PlayerMapper(), username)
+                .stream()
+                .findFirst().orElse(null);
+
+        if (player != null) {
+            addDecks(player);
+        }
+
+        return player;
+    }
+
+    @Override
     public Player add(Player player) {
         final String sql = "insert into player (first_name, last_name, username) " +
                 "values (?, ?, ?);";
