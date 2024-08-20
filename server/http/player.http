@@ -1,6 +1,5 @@
 @url = http://localhost:8080/api/player
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWVsZC1hZ2VudCIsInN1YiI6ImJvYkBkb21haW4uY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX1VTRVIiLCJleHAiOjE3MjM3NTUzMDh9.XbwOvasj1OD061WOltngAGTsV8wlLKwPxl4l_itsy4g
-
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJtdGctYXBwIiwic3ViIjoiYm9iQGRvbWFpbi5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQURNSU4iLCJleHAiOjE3MjQxNzAyNzl9.W0HSiMg6HTyn114rdRXEbVNidgt-PHN3H5iVQ27tSI8
 
 GET {{url}} HTTP/1.1
 Authorization: Bearer {{token}}

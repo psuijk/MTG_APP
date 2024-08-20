@@ -64,6 +64,14 @@ public class GameService {
             return result;
         }
 
+        game = gameRepo.add(game);
+
+        if (game == null) {
+            result.addMessage("something went wrong adding game", ResultType.FAILURE);
+            return result;
+        }
+        result.setPayload(game);
+
         for (int i = 0; i < game.getPlayerCount(); i++) {
             GameDeck gameDeck = gameDeckRepo.add(new GameDeck(0,game.getGameId(), game.getDecks()[i], i + 1));
             if (gameDeck == null) {
@@ -71,9 +79,6 @@ public class GameService {
                 return result;
             }
         }
-
-        game = gameRepo.add(game);
-        result.setPayload(game);
 
         return result;
     }

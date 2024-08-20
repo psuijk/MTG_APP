@@ -24,7 +24,15 @@ public class PlayerJDBCRepository implements PlayerRepository {
     public List<Player> findAll() {
         final String sql = "select player_id, first_name, last_name, username from player limit 1000;";
 
-        return jdbcTemplate.query(sql, new PlayerMapper());
+        List<Player> players = jdbcTemplate.query(sql, new PlayerMapper());
+
+        for (Player player : players) {
+            if (player != null) {
+                addDecks(player);
+            }
+        }
+
+        return players;
     }
 
     @Override

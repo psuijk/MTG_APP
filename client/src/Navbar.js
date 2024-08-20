@@ -17,7 +17,8 @@ function Navbar() {
             <div className="nav-links">
                 <Link to={'/home'}>Home</Link>
                 {isLoggedIn && <Link to={'/playerDashboard'}>Dashboard</Link>}
-                <Link to={'/players'}>Players</Link>
+                {isLoggedIn && <Link to={'/players'}>Players</Link>}
+                {isLoggedIn && <Link to={'/gameForm'}>Add Game</Link>}
             </div>
             {isLoggedIn && (
                 <button className="btn-logout" onClick={handleLogout}>Logout</button>

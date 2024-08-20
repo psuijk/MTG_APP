@@ -8,6 +8,7 @@ import PlayerList from "./PlayerList";
 import SignUp from "./SignUp";
 import PlayerDashboard from "./PlayerDashboard";
 import GameList from "./GameList";
+import GameForm from "./GameForm";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/playerDashboard" element={<PlayerDashboard />} />
         <Route path="/gameList" element={<GameList />} />
+        <Route path="/gameForm" element={<GameForm />} />
       </Routes>
     </Router>
   );
