@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import './Navbar.css';
 
 function Navbar() {
     // Check if the user is signed in by verifying the presence of an auth token in localStorage
@@ -15,7 +16,7 @@ function Navbar() {
     return (
         <nav className="navbar">
             <div className="nav-links">
-                <Link to={'/home'}>Home</Link>
+                <Link to={isLoggedIn ? '/home' : '/'}>Home</Link>
                 {isLoggedIn && <Link to={'/playerDashboard'}>Dashboard</Link>}
                 {isLoggedIn && <Link to={'/players'}>Players</Link>}
                 {isLoggedIn && <Link to={'/gameForm'}>Add Game</Link>}

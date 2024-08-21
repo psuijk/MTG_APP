@@ -1,0 +1,62 @@
+/* Ensure buttons are displayed side by side */
+.action-buttons {
+    display: flex;
+    /* Use flexbox to arrange items in a row */
+    gap: 0.5rem;
+    /* Space between buttons */
+    justify-content: flex-start;
+    /* Align buttons to the left */
+}
+
+/* Edit button style */
+.btn-edit {
+    background-color: lightblue;
+    /* Light blue background */
+    border: 1px solid lightblue;
+    /* Border color to match the background */
+    color: black;
+    /* Text color */
+    padding: 0.5rem 1rem;
+    /* Adjust padding if needed */
+}
+
+/* Edit button hover style */
+.btn-edit:hover {
+    background-color: deepskyblue;
+    /* Slightly darker blue on hover */
+    border: 1px solid deepskyblue;
+}
+
+/* Ensure the delete button is red */
+.btn-danger {
+    background-color: #e57373 !important;
+    /* Less bright red */
+    color: rgb(196, 11, 11) !important;
+    /* Text color for visibility */
+    border: none !important;
+    /* Remove border */
+    box-shadow: none !important;
+    /* Remove shadow effects */
+}
+
+/* Hover effect */
+.btn-danger:hover {
+    background-color: #ef5350 !important;
+    /* Slightly darker red on hover */
+}
+
+
+
+
+
+/* Ensure no text underline on buttons */
+.btn {
+    text-decoration: none;
+    /* Removes underline from all buttons */
+}
+
+/* Specific styles for the "Add a New Game" button */
+.btn-primary {
+    text-decoration: none;
+    /* Ensures the "Add a New Game" button has no underline */
+}

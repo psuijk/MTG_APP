@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { fetchWithAuth } from "./apiUtils";
+import './PlayerList.css'; // Ensure this file exists for button styling
 
 function PlayerList() {
 
     // STATE
     const [players, setPlayers] = useState([]);
     const url = "http://localhost:8080/api/player";
-    //const navigate = useNavigate();
+    const navigate = useNavigate(); // For navigation
 
-    // useEffect 
+    // useEffect
     useEffect(() => {
         fetchWithAuth(url)
             .then(response => {
@@ -23,31 +24,45 @@ function PlayerList() {
             .catch(console.log);
     }, []); // render once when the component loads
 
-    // handle delete
     const handleDeletePlayer = (playerId) => {
         const player = players.find(p => p.playerId === playerId);
         if (window.confirm(`Delete Player: username - ${player.username} / Name - ${player.firstName} ${player.lastName}?`)) {
-            const init = {
-                method: 'DELETE'
-            };
-            fetch(`${url}/${playerId}`, init)
+            fetchWithAuth(`${url}`, {
+                method: 'DELETE',
+                body: JSON.stringify({
+                    playerId: player.playerId, // Ensure fields match what backend expects
+                    username: player.username,
+                    firstName: player.firstName,
+                    lastName: player.lastName
+                }),
+            })
                 .then(response => {
-                    if (response.status === 204) {
-                        const newPlayers = players.filter(p => p.playerId !== playerId);
-                        setPlayers(newPlayers);
-                    } else {
-                        return Promise.reject(`Unexpected Status Code: ${response.status}`)
-                    }
+                    return response.text().then(text => {
+                        if (response.status === 204) {
+                            const newPlayers = players.filter(p => p.playerId !== playerId);
+                            setPlayers(newPlayers);
+                        } else {
+                            console.error(`Unexpected Status Code: ${response.status}`);
+                            console.error('Response Text:', text);
+                            return Promise.reject(`Unexpected Status Code: ${response.status}`);
+                        }
+                    });
                 })
-                .catch(console.log)
+                .catch(console.log);
         }
     }
 
 
-    return (<>
+
+    // handle edit navigation
+    const handleEditPlayer = (playerId) => {
+        navigate(`/player/edit/${playerId}`);
+    }
+
+    return (
         <section className="container">
             <h2 className="mb-4">Players</h2>
-            <Link className="btn btn-outline-secondary mb-4" to={'/player/add'}>Add A Player</Link>
+            <button className="btn btn-outline-secondary mb-4" onClick={() => navigate('/player/add')}>Add A Player</button>
             <table className="table table-striped table-hover">
                 <thead className="thead-dark">
                     <tr>
@@ -64,17 +79,15 @@ function PlayerList() {
                             <td>{player.lastName}</td>
                             <td>{player.username}</td>
                             <td>
-                                <Link className="btn btn-outline-primary" to={`/player/edit/${player.playerId}`}>Edit</Link>
+                                <button onClick={() => handleEditPlayer(player.playerId)} className="btn btn-outline-primary ml-3">Edit</button>
                                 <button onClick={() => handleDeletePlayer(player.playerId)} className="btn btn-outline-danger ml-3">Delete</button>
                             </td>
                         </tr>
-                    )
-                    }
+                    )}
                 </tbody>
             </table>
         </section>
-    </>);
+    );
 }
-
 
 export default PlayerList;

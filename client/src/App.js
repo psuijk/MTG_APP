@@ -9,6 +9,8 @@ import SignUp from "./SignUp";
 import PlayerDashboard from "./PlayerDashboard";
 import GameList from "./GameList";
 import GameForm from "./GameForm";
+import EditGame from "./EditGame";
+import PlayerForm from "./PlayerForm";
 
 function App() {
   return (
@@ -23,6 +25,11 @@ function App() {
         <Route path="/playerDashboard" element={<PlayerDashboard />} />
         <Route path="/gameList" element={<GameList />} />
         <Route path="/gameForm" element={<GameForm />} />
+        <Route path="/editGame/:gameId" element={<EditGame />} />
+        <Route path="/player/add" element={<PlayerForm />} />
+        <Route path="/player/add" element={<PlayerForm />} />
+        <Route path="/player/edit/:playerId" element={<PlayerForm />} />
+
       </Routes>
     </Router>
   );

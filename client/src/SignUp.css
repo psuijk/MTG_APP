@@ -1,0 +1,14 @@
+/* Styles specific to SignUp page */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.signup-form {
+    margin-top: 20px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}

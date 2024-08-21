@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
-import { fetchPlayer, fetchWithAuth } from "./apiUtils";
+import React, { useEffect, useState } from 'react';
+import { fetchPlayer, fetchWithAuth } from './apiUtils';
+import './PlayerDashboard.css';
 
 function PlayerDashboard() {
-    // STATE
     const [player, setPlayer] = useState(null);
     const [games, setGames] = useState([]);
+    const [decksWithWinrate, setDecksWithWinrate] = useState([]);
+    const [deckNames, setDeckNames] = useState({}); // State to store deck names
 
-    // Retrieve the username from localStorage
     const username = localStorage.getItem('username');
 
     useEffect(() => {
         if (username) {
-            console.log("Sending this username:", username);
             fetchPlayer(username)
                 .then(player => {
-                    console.log("Received player data from fetchPlayer:", player);
                     if (player) {
                         setPlayer(player);
                         fetchGames(player.playerId);
+                        fetchDecksWinrates(player.playerDecks); // Fetch winrates for all decks
                     } else {
-                        console.error("No player found in the response");
+                        console.error('No player found in the response');
                     }
                 })
-                .catch(error => console.error("Error fetching player:", error));
+                .catch(error => console.error('Error fetching player:', error));
         } else {
             console.log('No username found in localStorage');
         }
@@ -38,8 +38,73 @@ function PlayerDashboard() {
                     return Promise.reject(`Unexpected Status Code: ${response.status}`);
                 }
             })
-            .then(data => setGames(data))
+            .then(data => {
+                setGames(data);
+                // Fetch deck names for the games
+                const allDeckIds = new Set();
+                data.forEach(game => {
+                    allDeckIds.add(game.winnerDeckId);
+                    game.decks.forEach(deckId => allDeckIds.add(deckId));
+                });
+                fetchDeckNames(Array.from(allDeckIds));
+            })
             .catch(console.log);
+    };
+
+    const fetchDeckNames = (deckIds) => {
+        const fetchDeckName = async (deckId) => {
+            const url = `http://localhost:8080/api/deck/${deckId}`;
+            try {
+                const response = await fetchWithAuth(url);
+                if (response.status === 200) {
+                    const deck = await response.json();
+                    return { deckId, name: deck.name };
+                } else {
+                    console.error(`Error fetching deck ${deckId}: ${response.status}`);
+                }
+            } catch (error) {
+                console.error(`Error fetching deck ${deckId}:`, error);
+            }
+            return { deckId, name: 'Unknown' };
+        };
+
+        Promise.all(deckIds.map(fetchDeckName))
+            .then(results => {
+                const nameMap = results.reduce((acc, { deckId, name }) => {
+                    acc[deckId] = name;
+                    return acc;
+                }, {});
+                setDeckNames(nameMap);
+            });
+    };
+
+    const fetchDecksWinrates = (decks) => {
+        const fetchDeckWinrate = async (deckId) => {
+            const url = `http://localhost:8080/api/game/decksGames/${deckId}`;
+            try {
+                const response = await fetchWithAuth(url);
+                if (response.status === 200) {
+                    const gamesForDeck = await response.json();
+                    const totalGames = gamesForDeck.length;
+                    const wins = gamesForDeck.filter(game => game.winnerDeckId === deckId).length;
+                    return { deckId, winrate: (totalGames > 0) ? (wins / totalGames) * 100 : 0 };
+                } else {
+                    console.error(`Error fetching games for deck ${deckId}: ${response.status}`);
+                }
+            } catch (error) {
+                console.error(`Error fetching games for deck ${deckId}:`, error);
+            }
+            return { deckId, winrate: 0 };
+        };
+
+        Promise.all(decks.map(deck => fetchDeckWinrate(deck.deckId)))
+            .then(results => {
+                const winrateMap = results.reduce((acc, { deckId, winrate }) => {
+                    acc[deckId] = winrate;
+                    return acc;
+                }, {});
+                setDecksWithWinrate(winrateMap);
+            });
     };
 
     return (
@@ -52,14 +117,16 @@ function PlayerDashboard() {
                             <th>Deck Name</th>
                             <th>Commander</th>
                             <th>Active</th>
+                            <th>Winrate (%)</th> {/* Added column for winrate */}
                         </tr>
                     </thead>
                     <tbody>
-                        {player.playerDecks.slice(0, 10).map((deck, index) => (
-                            <tr key={index}>
+                        {player.playerDecks.slice(0, 10).map(deck => (
+                            <tr key={deck.deckId}> {/* Changed from index to deckId */}
                                 <td>{deck.name}</td>
                                 <td>{deck.commanderId}</td>
                                 <td>{deck.active ? 'Yes' : 'No'}</td>
+                                <td>{decksWithWinrate[deck.deckId] ? decksWithWinrate[deck.deckId].toFixed(2) : 'Calculating...'}</td> {/* Display winrate */}
                             </tr>
                         ))}
                     </tbody>
@@ -80,9 +147,9 @@ function PlayerDashboard() {
                 </thead>
                 <tbody>
                     {games.slice(0, 10).map(game => (
-                        <tr key={game.gameId}>
+                        <tr key={game.gameId}> {/* Changed from index to gameId */}
                             <td>{game.datePlayed}</td>
-                            <td>{game.winnerDeckId}</td>
+                            <td>{deckNames[game.winnerDeckId] || 'Loading...'}</td> {/* Display winning deck name */}
                             <td>{game.playerCount}</td>
                         </tr>
                     ))}

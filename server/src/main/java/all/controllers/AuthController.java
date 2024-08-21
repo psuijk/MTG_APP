@@ -1,6 +1,9 @@
 package all.controllers;
 
+import all.domain.PlayerService;
+import all.domain.Result;
 import all.models.AppUser;
+import all.models.Player;
 import all.security.AppUserService;
 import all.security.JwtConverter;
 import org.springframework.dao.DuplicateKeyException;
@@ -28,11 +31,13 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtConverter converter;
     private final AppUserService appUserService;
+    private final PlayerService playerService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtConverter converter, AppUserService appUserService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtConverter converter, AppUserService appUserService, PlayerService playerService) {
         this.authenticationManager = authenticationManager;
         this.converter = converter;
         this.appUserService = appUserService;
+        this.playerService = playerService;
     }
 
     @PostMapping("/authenticate")
@@ -63,6 +68,37 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> createAccount(@RequestBody Map<String, String> credentials) {
         AppUser appUser = null;
+
+        try {
+            String username = credentials.get("username");
+            String password = credentials.get("password");
+
+            appUser = appUserService.create(username, password);
+        } catch (ValidationException ex) {
+            return new ResponseEntity<>(List.of(ex.getMessage()), HttpStatus.BAD_REQUEST);
+        } catch (DuplicateKeyException ex) {
+            return new ResponseEntity<>(List.of("The provided username already exists"), HttpStatus.BAD_REQUEST);
+        }
+
+        // happy path...
+
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("appUserId", appUser.getAppUserId());
+
+        return new ResponseEntity<>(map, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register/newplayer")
+    public ResponseEntity<?> createAccountAndPlayer(@RequestBody Map<String, String> credentials) {
+        AppUser appUser = null;
+        Player player = new Player();
+        player.setUsername(credentials.get("username"));
+        player.setFirstName(credentials.get("firstName"));
+        player.setLastName(credentials.get("lastName"));
+        Result<Player> result = playerService.add(player);
+        if (!result.isSuccess()) {
+            return ErrorResponse.build(result);
+        }
 
         try {
             String username = credentials.get("username");

@@ -1,0 +1,48 @@
+/* Container styling for centering the form */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+/* Form styling */
+.game-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    min-height: 500px;
+    box-sizing: border-box;
+}
+
+/* Styling for form rows to align player and deck dropdowns */
+.form-row {
+    display: flex;
+    gap: 20px;
+    /* Space between the player and deck dropdowns */
+    margin-bottom: 20px;
+    /* Space below each row */
+}
+
+/* Specific styling for the date input */
+input[type="date"] {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+/* Styling for the select dropdown */
+.deck-select {
+    background-color: #e3f2fd;
+    /* Light blue color */
+    border: 1px solid #b3e5fc;
+    /* Border color */
+}
+
+/* Ensure both dropdowns have similar styling */
+select {
+    flex: 1;
+}

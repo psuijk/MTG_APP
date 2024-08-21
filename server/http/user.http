@@ -17,3 +17,15 @@ Content-Type: application/json
     "username": "test@user.com",
     "password": "P@ssw0rd!"
 }
+
+### 
+
+POST {{url}}/register/newplayer HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "test2@user.com",
+    "password": "P@ssw0rd!",
+    "firstName": "John",
+    "lastName": "Stevens"
+}

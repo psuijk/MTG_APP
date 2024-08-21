@@ -64,62 +64,107 @@ CREATE TABLE game_deck (
 );
 
 -- TEST DATA INSERTION -- 
-INSERT INTO player (player_id, first_name, last_name, username)
-    VALUES
-    (1, 'Alice', 'Smith', 'alice@domain.com'),
-    (2, 'Bob', 'Johnson', 'bob@domain.com'),
-    (3, 'Charlie', 'Williams', 'charlie@domain.com'),
-    (4, 'Dana', 'Brown', 'dana@domain.com'),
-    (5, 'Eli', 'Jones', 'eli@domain.com'),
-    (6, 'Test', 'User', 'test@user.com'),
-    (7, 'Steve', 'Vai', null),
-    (8, 'Joe', 'Bob', null);
 
-insert into app_role (`name`) values
-    ('USER'),
-    ('ADMIN');
+-- Insert players
+INSERT INTO player (first_name, last_name, username) VALUES
+('John', 'Doe', 'johndoe'),
+('Jane', 'Smith', 'janesmith'),
+('Bob', 'Brown', 'bobbrown'),
+('Alice', 'Johnson', 'alice@google.com'),
+('Charlie', 'Davis', 'charliedavis');
 
--- passwords are set to "P@ssw0rd!"
-INSERT INTO app_user (username, password_hash, disabled)
-    VALUES
-    
-    ('bob@domain.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
-    ('charlie@domain.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
-    ('dana@domain.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
-    ('eli@domain.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0);
+-- Insert app users
+INSERT INTO app_user (username, password_hash) VALUES
+('johndoe', 'hashedpassword1'),
+('janesmith', 'hashedpassword2'),
+('bobbrown', 'hashedpassword3'),
+('alice@google.com', 'hashedpassword4');
 
-insert into app_user_role
-    values
-    (1, 2),
-    (2, 1);
+-- Insert roles
+INSERT INTO app_role (name) VALUES
+('USER'),
+('ADMIN');
 
-INSERT INTO deck (deck_id, player_id, name, active, commander_id)
-VALUES
-    (1, 1, 'Dragons Fury', TRUE, 'Nicol Bolas'),
-    (2, 2, 'Elves of the Wood', TRUE, 'Ezuri'),
-    (3, 3, 'Mystic Waters', FALSE, 'Thassa'),
-    (4, 4, 'Angels and Demons', TRUE, 'Kaalia of the Vast'),
-    (5, 5, 'Goblin Horde', TRUE, 'Krenko'),
-    (6, 2, 'test', FALSE, 'elfy');
+-- Assign roles to users
+INSERT INTO app_user_role (app_user_id, app_role_id) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(1, 2); -- John Doe is also an admin
 
-INSERT INTO game (game_id, date_played, winner_deck_id, player_count)
-VALUES
-    (1, '2024-08-01', 1, 4),
-    (2, '2024-08-02', 2, 3),
-    (3, '2024-08-03', 3, 2),
-    (4, '2024-08-04', 4, 5),
-    (5, '2024-08-05', 5, 4),
-    (6, '2024-08-05', 5, 4);
+-- Insert decks
+INSERT INTO deck (player_id, name, active, commander_id) VALUES
+(1, 'Five-Color Dragons', TRUE, 'Niv-Mizzet'),
+(1, 'Superfriends Assemble', TRUE, 'Atraxa'),
+(2, 'Vampire Horde', TRUE, 'Edgar Markov'),
+(2, 'Elder Dragon Storm', TRUE, 'The Ur-Dragon'),
+(3, 'Sacrifice Shenanigans', TRUE, 'Korvold'),
+(3, 'Graveyard Reclamation', TRUE, 'Muldrotha'),
+(4, 'Monk Mastery', TRUE, 'Narset'),
+(4, 'Elemental Fury', TRUE, 'Omnath'),
+(5, 'Frog Tribal', TRUE, 'The Gitrog Monster'),
+(5, 'Angel of Vengeance', TRUE, 'Kaalia');
 
-INSERT INTO game_deck (game_deck_id, game_id, deck_id, position)
-VALUES
-    (1, 1, 1, 1),
-    (2, 1, 2, 2),
-    (3, 1, 3, 3),
-    (4, 1, 4, 4),
-    (5, 2, 2, 1),
-    (6, 2, 3, 2),
-    (7, 3, 3, 1),
-    (8, 3, 4, 2),
-    (9, 4, 4, 1),
-    (10, 4, 5, 2);
+
+
+-- Insert games with playerCount of 4 or 5
+INSERT INTO game (date_played, winner_deck_id, player_count) VALUES
+('2024-08-01', 1, 4),
+('2024-08-02', 2, 4),
+('2024-08-03', 3, 4),
+('2024-08-04', 4, 5),
+('2024-08-05', 5, 5),
+('2024-08-06', 6, 4),
+('2024-08-07', 7, 5),
+('2024-08-08', 8, 5),
+('2024-08-09', 9, 4),
+('2024-08-10', 10, 4);
+
+-- Insert game_deck mappings
+INSERT INTO game_deck (game_id, deck_id, position) VALUES
+(1, 1, 1),
+(1, 3, 2),
+(1, 5, 3),
+(1, 7, 4),
+(2, 2, 1),
+(2, 4, 2),
+(2, 6, 3),
+(2, 8, 4),
+(3, 3, 1),
+(3, 7, 2),
+(3, 9, 3),
+(3, 1, 4),
+(4, 4, 1),
+(4, 8, 2),
+(4, 2, 3),
+(4, 6, 4),
+(4, 10, 5),
+(5, 5, 1),
+(5, 1, 2),
+(5, 9, 3),
+(5, 3, 4),
+(5, 7, 5),
+(6, 6, 1),
+(6, 2, 2),
+(6, 4, 3),
+(6, 10, 4),
+(7, 7, 1),
+(7, 5, 2),
+(7, 3, 3),
+(7, 1, 4),
+(7, 9, 5),
+(8, 8, 1),
+(8, 2, 2),
+(8, 6, 3),
+(8, 4, 4),
+(8, 10, 5),
+(9, 9, 1),
+(9, 3, 2),
+(9, 5, 3),
+(9, 7, 4),
+(10, 10, 1),
+(10, 6, 2),
+(10, 8, 3),
+(10, 2, 4);
+

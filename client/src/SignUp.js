@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './SignUp.css';
+import { Link } from 'react-router-dom';
 
 function SignUp() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isNewPlayer, setIsNewPlayer] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const signupUrl = 'http://localhost:8080/api/user/register';
+        const url = isNewPlayer
+            ? 'http://localhost:8080/api/user/register/newplayer'
+            : 'http://localhost:8080/api/user/register';
 
-        fetch(signupUrl, {
+        const body = {
+            username,
+            password,
+            ...(isNewPlayer && { firstName, lastName }), // Include firstName and lastName if it's a new player
+        };
+
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify(body),
         })
             .then(response => {
                 if (response.status === 201) {
@@ -33,7 +46,7 @@ function SignUp() {
                 console.log("Received JWT token:", data.jwt_token);
                 localStorage.setItem('authToken', data.jwt_token);
                 localStorage.setItem('username', username); // Save username as well
-                navigate('/playerDashboard');
+                navigate('/login');
             })
             .catch(err => {
                 console.log(err);
@@ -68,6 +81,44 @@ function SignUp() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
 
+                        <div className="mb-3">
+                            <label htmlFor="newPlayer">
+                                <input
+                                    type="checkbox"
+                                    id="newPlayer"
+                                    checked={isNewPlayer}
+                                    onChange={(e) => setIsNewPlayer(e.target.checked)}
+                                />
+                                New Player
+                            </label>
+                        </div>
+
+                        {isNewPlayer && (
+                            <>
+                                <div className="mb-3">
+                                    <label htmlFor="firstName">First Name</label>
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="lastName">Last Name</label>
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                    />
+                                </div>
+                            </>
+                        )}
+
                         <div className="button-container">
                             <button type="submit" className="btn btn-primary">Sign Up</button>
                         </div>
@@ -75,6 +126,7 @@ function SignUp() {
                 </div>
 
                 {error && <p className="error-message">{error}</p>}
+                <Link to="/">Go Back</Link>
             </div>
         </>
     );

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { fetchWithAuth } from './apiUtils'; // Adjust path if needed
+import { fetchWithAuth } from './apiUtils';
+import './GameForm.css'; // Ensure this path is correct
+import { useNavigate } from 'react-router-dom';
 
 function GameForm() {
     const [players, setPlayers] = useState([]);
@@ -8,14 +10,13 @@ function GameForm() {
     const [winningDeck, setWinningDeck] = useState(''); // State to store the winning deck
     const [selectedDecks, setSelectedDecks] = useState([]); // Array of selected deck objects
     const [datePlayed, setDatePlayed] = useState(''); // State to store the date played
+    const navigate = useNavigate();
 
-    // Fetch players from backend
     useEffect(() => {
         const fetchPlayers = async () => {
             try {
-                const response = await fetchWithAuth('http://localhost:8080/api/player'); // Adjust endpoint as necessary
+                const response = await fetchWithAuth('http://localhost:8080/api/player');
                 const players = await response.json();
-                console.log("Fetched players:", players); // Log players to ensure they are fetched
                 setPlayers(players);
             } catch (error) {
                 console.error("Error fetching players:", error);
@@ -25,17 +26,14 @@ function GameForm() {
         fetchPlayers();
     }, []);
 
-    // Handle player selection
     const handlePlayerChange = (index, playerId) => {
-        const player = players.find(p => p.playerId === parseInt(playerId)); // Ensure playerId is compared as a number
-        console.log(`Selected player ${index}:`, player); // Log selected player
+        const player = players.find(p => p.playerId === parseInt(playerId));
         const newSelectedPlayers = [...selectedPlayers];
-        newSelectedPlayers[index] = { playerId: parseInt(playerId), deckId: '' }; // Ensure playerId is a number
+        newSelectedPlayers[index] = { playerId: parseInt(playerId), deckId: '' };
         setSelectedPlayers(newSelectedPlayers);
         updateSelectedDecks(newSelectedPlayers);
     };
 
-    // Handle deck selection
     const handleDeckChange = (index, deckId) => {
         const selectedPlayer = players.find(player => player.playerId === selectedPlayers[index].playerId);
         const selectedDeck = selectedPlayer?.playerDecks.find(deck => deck.deckId === parseInt(deckId));
@@ -46,7 +44,6 @@ function GameForm() {
         updateSelectedDecks(newSelectedPlayers, selectedDeck);
     };
 
-    // Update the array of selected decks
     const updateSelectedDecks = (selectedPlayers, newDeck) => {
         const decks = selectedPlayers
             .map(sp => {
@@ -55,7 +52,6 @@ function GameForm() {
             })
             .filter(deck => deck !== undefined);
 
-        // If a new deck was selected, add it to the decks array
         if (newDeck) {
             const deckAlreadyExists = decks.find(deck => deck.deckId === newDeck.deckId);
             if (!deckAlreadyExists) {
@@ -66,7 +62,6 @@ function GameForm() {
         setSelectedDecks(decks);
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         const deckIds = selectedPlayers.map(sp => sp.deckId);
@@ -86,117 +81,111 @@ function GameForm() {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log("Game created successfully:", result);
-                // Handle successful creation (e.g., redirect or show success message)
+                navigate('/home');
             } else {
                 console.error("Error creating game:", await response.text());
-                // Handle error response
             }
         } catch (error) {
             console.error("Error during fetch:", error);
-            // Handle network errors
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-                <label htmlFor="datePlayed">Date Played</label>
-                <input
-                    type="date"
-                    id="datePlayed"
-                    className="form-control"
-                    value={datePlayed}
-                    onChange={(e) => setDatePlayed(e.target.value)}
-                    required
-                />
-            </div>
+        <div className="form-container">
+            <form className="game-form" onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    <label htmlFor="datePlayed">Date Played</label>
+                    <input
+                        type="date"
+                        id="datePlayed"
+                        style={{ width: '150px', marginBottom: '20px' }}
+                        value={datePlayed}
+                        onChange={(e) => setDatePlayed(e.target.value)}
+                        required
+                    />
+                </div>
 
-            <div className="mb-3">
-                <label htmlFor="playerCount">Player Count</label>
-                <select
-                    id="playerCount"
-                    className="form-select"
-                    value={playerCount}
-                    onChange={(e) => setPlayerCount(parseInt(e.target.value))}
-                    required
-                >
-                    <option value={4}>4 Players</option>
-                    <option value={5}>5 Players</option>
-                </select>
-            </div>
-
-            {[...Array(playerCount)].map((_, index) => (
-                <div key={index}>
-                    <label>Select Player {index + 1}</label>
+                <div className="mb-3">
+                    <label htmlFor="playerCount">Player Count</label>
                     <select
-                        className="form-select"
-                        value={selectedPlayers[index]?.playerId || ''}
-                        onChange={(e) => handlePlayerChange(index, e.target.value)}
+                        id="playerCount"
+                        style={{ width: '100%' }}
+                        value={playerCount}
+                        onChange={(e) => setPlayerCount(parseInt(e.target.value))}
                         required
                     >
-                        <option value="">Select Player</option>
-                        {players.map(player => (
-                            <option key={player.playerId} value={player.playerId}>
-                                {player.firstName} {player.lastName}
-                            </option>
-                        ))}
+                        <option value={4}>4 Players</option>
+                        <option value={5}>5 Players</option>
                     </select>
+                </div>
 
-                    {selectedPlayers[index]?.playerId && (
+                {[...Array(playerCount)].map((_, index) => (
+                    <div key={index}>
+                        <label>Select Player {index + 1}</label>
                         <select
-                            className="form-select mt-2"
-                            value={selectedPlayers[index]?.deckId || ''}
-                            onChange={(e) => handleDeckChange(index, e.target.value)}
+                            style={{ width: '100%' }}
+                            value={selectedPlayers[index]?.playerId || ''}
+                            onChange={(e) => handlePlayerChange(index, e.target.value)}
                             required
                         >
-                            <option value="">Select Deck</option>
-                            {(() => {
-                                const selectedPlayer = players.find(player => player.playerId === selectedPlayers[index].playerId);
-                                console.log(`Selected player for decks ${selectedPlayers[index].playerId}:`, selectedPlayer); // Log selected player
-                                if (!selectedPlayer) {
-                                    console.log('No player found');
-                                    return <option value="">No player found</option>;
-                                }
-                                if (!selectedPlayer.playerDecks || selectedPlayer.playerDecks.length === 0) {
-                                    console.log('No decks available');
-                                    return <option value="">No decks available</option>;
-                                }
-                                return selectedPlayer.playerDecks.map(deck => (
-                                    <option key={deck.deckId} value={deck.deckId}>
-                                        {deck.name}
-                                    </option>
-                                ));
-                            })()}
+                            <option value="">Select Player</option>
+                            {players.map(player => (
+                                <option key={player.playerId} value={player.playerId}>
+                                    {player.firstName} {player.lastName}
+                                </option>
+                            ))}
                         </select>
-                    )}
-                </div>
-            ))}
 
-            {selectedDecks.length > 0 && (
-                <div className="mb-3">
-                    <label htmlFor="winningDeck">Winning Deck</label>
-                    <select
-                        id="winningDeck"
-                        className="form-select"
-                        value={winningDeck}
-                        onChange={(e) => setWinningDeck(e.target.value)}
-                        required
-                    >
-                        <option value="">Select Winning Deck</option>
-                        {selectedDecks.map(deck => (
-                            <option key={deck.deckId} value={deck.deckId}>
-                                {deck.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            )}
+                        {selectedPlayers[index]?.playerId && (
+                            <select
+                                className="deck-select mt-2"
+                                style={{ width: '100%' }}
+                                value={selectedPlayers[index]?.deckId || ''}
+                                onChange={(e) => handleDeckChange(index, e.target.value)}
+                                required
+                            >
+                                <option value="">Select Deck</option>
+                                {(() => {
+                                    const selectedPlayer = players.find(player => player.playerId === selectedPlayers[index].playerId);
+                                    if (!selectedPlayer || !selectedPlayer.playerDecks) {
+                                        return <option value="">No decks available</option>;
+                                    }
+                                    return selectedPlayer.playerDecks.map(deck => (
+                                        <option key={deck.deckId} value={deck.deckId}>
+                                            {deck.name}
+                                        </option>
+                                    ));
+                                })()}
+                            </select>
+                        )}
+                    </div>
+                ))}
 
-            <button type="submit" className="btn btn-primary mt-3">
-                Submit
-            </button>
-        </form>
+                {selectedDecks.length > 0 && (
+                    <div className="mb-3">
+                        <label htmlFor="winningDeck">Winning Deck</label>
+                        <select
+                            id="winningDeck"
+                            style={{ width: '100%' }}
+                            value={winningDeck}
+                            onChange={(e) => setWinningDeck(e.target.value)}
+                            required
+                        >
+                            <option value="">Select Winning Deck</option>
+                            {selectedDecks.map(deck => (
+                                <option key={deck.deckId} value={deck.deckId}>
+                                    {deck.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
+                <button type="submit" className="btn btn-primary mt-3">
+                    Submit
+                </button>
+            </form>
+        </div>
     );
 }
 

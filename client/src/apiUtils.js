@@ -1,7 +1,7 @@
 // apiUtils.js
 export const fetchWithAuth = (url, options = {}) => {
     const token = localStorage.getItem('authToken');
-    console.log("Token being sent:", token);
+
     return fetch(url, {
         ...options,
         headers: {

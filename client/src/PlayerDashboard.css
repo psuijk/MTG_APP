@@ -1,0 +1,13 @@
+/* Styles specific to PlayerDashboard page */
+.container {
+    padding: 20px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.thead-dark th {
+    background-color: #343a40;
+    color: #fff;
+}

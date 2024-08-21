@@ -1,7 +1,10 @@
 package all.data;
 
+import all.data.mappers.DeckMapper;
+import all.data.mappers.GameDeckMapper;
 import all.data.mappers.GameMapper;
 import all.models.Game;
+import all.models.GameDeck;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -24,7 +27,15 @@ public class GameJDBCRepository implements GameRepository {
     public List<Game> findAll() {
         final String sql = "select game_id, date_played, winner_deck_id, player_count from game limit 1000";
 
-        return jdbcTemplate.query(sql, new GameMapper());
+        List<Game> games = jdbcTemplate.query(sql, new GameMapper());
+
+        for (Game g : games) {
+            if (g != null) {
+                addDecks(g);
+            }
+        }
+
+        return games;
     }
 
     @Override
@@ -32,9 +43,14 @@ public class GameJDBCRepository implements GameRepository {
         final String sql = "select game_id, date_played, winner_deck_id, player_count " +
                 "from game " +
                 "where game_id = ?;";
-        return jdbcTemplate.query(sql, new GameMapper(), gameId)
+        Game g = jdbcTemplate.query(sql, new GameMapper(), gameId)
                 .stream()
                 .findFirst().orElse(null);
+
+        if (g != null) {
+            addDecks(g);
+        }
+        return g;
     }
 
     @Override
@@ -77,5 +93,20 @@ public class GameJDBCRepository implements GameRepository {
     @Override
     public boolean delete(int gameId) {
         return jdbcTemplate.update("delete from game where game_id = ?;", gameId) > 0;
+    }
+
+    private void addDecks(Game game) {
+        final String sql = "select gd.game_deck_id, gd.game_id, gd.deck_id, gd.position " +
+                "from game g " +
+                "join " +
+                "game_deck gd on g.game_id = gd.game_id " +
+                "where g.game_id = ?;";
+
+        var gameDecks = jdbcTemplate.query(sql, new GameDeckMapper(), game.getGameId());
+        int[] decks = new int[game.getPlayerCount()];
+        for (GameDeck gd : gameDecks) {
+            decks[gd.getPosition() - 1] = gd.getDeckId();
+        }
+        game.setDecks(decks);
     }
 }

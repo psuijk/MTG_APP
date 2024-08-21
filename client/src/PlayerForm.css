@@ -1,0 +1,28 @@
+/* PlayerForm.css */
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.btn {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.readonly-field {
+    background-color: #f8f9fa;
+    /* Light grey background */
+    cursor: not-allowed;
+    /* Show a not-allowed cursor */
+}

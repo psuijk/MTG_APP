@@ -1,5 +1,6 @@
 package all.domain;
 
+import all.data.AppUserRepository;
 import all.data.PlayerJDBCRepository;
 import all.data.PlayerRepository;
 import all.models.Player;
@@ -10,9 +11,11 @@ import java.util.List;
 @Service
 public class PlayerService {
     PlayerRepository playerRepo;
+    AppUserRepository userRepo;
 
-    public PlayerService(PlayerRepository playerRepo) {
+    public PlayerService(PlayerRepository playerRepo, AppUserRepository userRepo) {
         this.playerRepo = playerRepo;
+        this.userRepo = userRepo;
     }
 
     public List<Player> findAll() { return this.playerRepo.findAll(); }
@@ -72,7 +75,7 @@ public class PlayerService {
             return result;
         }
 
-        if (player.getUsername() != null && !player.getUsername().isEmpty()) {
+        if (userRepo.findByUsername(player.getUsername()) != null) {
             result.addMessage("cannot delete player with existing account", ResultType.INVALID);
             return result;
         }

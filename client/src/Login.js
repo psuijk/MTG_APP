@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import './Login.css'; // Import the new CSS file
 
 function Login() {
     const [username, setUsername] = useState(''); // Update variable name to 'username'
