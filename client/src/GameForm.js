@@ -92,6 +92,9 @@ function GameForm() {
 
     return (
         <div className="form-container">
+            <button className="btn btn-primary mb-3" onClick={() => navigate('/deck/add')}>
+                Add Deck
+            </button>
             <form className="game-form" onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="datePlayed">Date Played</label>

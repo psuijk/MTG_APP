@@ -11,6 +11,7 @@ import GameList from "./GameList";
 import GameForm from "./GameForm";
 import EditGame from "./EditGame";
 import PlayerForm from "./PlayerForm";
+import DeckForm from "./DeckForm";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/player/add" element={<PlayerForm />} />
         <Route path="/player/add" element={<PlayerForm />} />
         <Route path="/player/edit/:playerId" element={<PlayerForm />} />
+        <Route path="/deck/add" element={<DeckForm />} />
 
       </Routes>
     </Router>

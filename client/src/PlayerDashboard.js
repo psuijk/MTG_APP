@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPlayer, fetchWithAuth } from './apiUtils';
 import './PlayerDashboard.css';
+import { useNavigate } from 'react-router-dom';
 
 function PlayerDashboard() {
     const [player, setPlayer] = useState(null);
@@ -9,6 +10,7 @@ function PlayerDashboard() {
     const [deckNames, setDeckNames] = useState({}); // State to store deck names
 
     const username = localStorage.getItem('username');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (username) {
@@ -110,6 +112,11 @@ function PlayerDashboard() {
     return (
         <section className="container">
             <h2 className="mb-4">{player?.firstName}'s Decks</h2>
+
+            <button className="btn btn-primary mb-3" onClick={() => navigate('/deck/add')}>
+                Add Deck
+            </button>
+
             {player ? (
                 <table className="table table-striped table-hover">
                     <thead className="thead-dark">

@@ -1,0 +1,76 @@
+/* DeckForm.css */
+
+/* Ensures the whole page is centered vertically and horizontally */
+.add-deck-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Full viewport height */
+    background-color: #f8f9fa;
+    /* Light background for a clean look */
+}
+
+/* Styling for the form container */
+.add-deck-form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Slight shadow for depth */
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Ensures form elements have consistent spacing */
+.add-deck-form .form-group {
+    margin-bottom: 20px;
+}
+
+/* Style for form labels */
+.add-deck-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Style for form inputs */
+.add-deck-form input,
+.add-deck-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    box-sizing: border-box;
+}
+
+/* Style for checkbox */
+.add-deck-form input[type="checkbox"] {
+    margin-left: 10px;
+    transform: scale(1.2);
+    /* Makes the checkbox a bit larger */
+}
+
+/* Button styles */
+.add-deck-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.add-deck-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Optional: Style the form title */
+.add-deck-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
